@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 66782658}
   m_Layer: 0
   m_Name: Items_0 (5)
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 298090385}
   - component: {fileID: 298090384}
   - component: {fileID: 298090383}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Brick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -403,7 +403,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -546,7 +546,7 @@ GameObject:
   - component: {fileID: 315625298}
   - component: {fileID: 315625297}
   - component: {fileID: 315625300}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Items_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -788,7 +788,7 @@ GameObject:
   - component: {fileID: 418856637}
   m_Layer: 0
   m_Name: Mario-Coin-Enemies_2 (1)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -917,6 +917,8 @@ GameObject:
   - component: {fileID: 427275342}
   - component: {fileID: 427275341}
   - component: {fileID: 427275344}
+  - component: {fileID: 427275345}
+  - component: {fileID: 427275346}
   m_Layer: 0
   m_Name: Mario_13
   m_TagString: Untagged
@@ -1030,12 +1032,48 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_GravityScale: 3
+  m_Material: {fileID: 6200000, guid: 2c1b39b84b3a0ec4d8acdef652e4309d, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!114 &427275345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427275340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08658c4cc53718244b5199301e9b335a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  jumpVelocity: 20
+  moveVelocity: 10
+--- !u!95 &427275346
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427275340}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3dc2b96dd11e28a45a7de29ba9e7ef3f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &430488199
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,7 +1087,7 @@ GameObject:
   - component: {fileID: 430488200}
   m_Layer: 0
   m_Name: Items_0
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1159,7 +1197,7 @@ GameObject:
   - component: {fileID: 476658760}
   m_Layer: 0
   m_Name: Mario-Coin-Enemies_29
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1372,7 +1410,7 @@ GameObject:
   - component: {fileID: 555253373}
   m_Layer: 0
   m_Name: Items_0 (6)
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1525,7 +1563,7 @@ GameObject:
   - component: {fileID: 752024848}
   - component: {fileID: 752024847}
   - component: {fileID: 752024850}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mario-Coin-Enemies_142
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1658,7 +1696,7 @@ GameObject:
   - component: {fileID: 835677875}
   m_Layer: 0
   m_Name: Mario-Coin-Enemies_2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1748,7 +1786,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 835677871}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4733, y: -3.4481, z: 0}
+  m_LocalPosition: {x: -5.74, y: -3.42, z: 0}
   m_LocalScale: {x: 0.7082, y: 0.7082, z: 0.7082}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1788,7 +1826,7 @@ GameObject:
   - component: {fileID: 1241766324}
   m_Layer: 0
   m_Name: Items_0 (1)
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1940,7 +1978,7 @@ GameObject:
   - component: {fileID: 1437452006}
   m_Layer: 0
   m_Name: Items_0 (4)
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2131,7 +2169,7 @@ GameObject:
   - component: {fileID: 1575795315}
   m_Layer: 0
   m_Name: Items_0 (3)
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2241,7 +2279,7 @@ GameObject:
   - component: {fileID: 1834415619}
   - component: {fileID: 1834415618}
   - component: {fileID: 1834415617}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GroundTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2301,7 +2339,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.0714286, y: 0.0714286, z: 0}
   m_MaxChunkCount: 16
@@ -2726,7 +2764,7 @@ GameObject:
   - component: {fileID: 2087635052}
   m_Layer: 0
   m_Name: Items_0 (2)
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
