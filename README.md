@@ -9,3 +9,5 @@
 - Game name: Mario in a dungeon
 - Project: Assignment 01 - CS427 - Make 2D Scene
 - Mechanics: Similar to Mario gameplay, you move around with Arrow Keys, jump using Space (the longer you hold, the higher you jump). You can kill enemies by landing on top of them, if you walk from a side, you will lose a life. Collect coins and move to the exit to win.
+- Prerequisites: Unity Editor 2020.3f.10
+- Packages used: Cinemachine, Visual Effect Graph, Shader Graph, TextMeshPro, Universal RP, Post Processing Stack.
