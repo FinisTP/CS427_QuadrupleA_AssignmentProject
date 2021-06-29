@@ -7,6 +7,7 @@ public class MainCharacter : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float jumpVelocity = 20f;
     [SerializeField] float moveVelocity = 10f;
+    [SerializeField] Vector2 startPoint;
 
     Rigidbody2D rigid;
     BoxCollider2D col;
@@ -22,6 +23,7 @@ public class MainCharacter : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
+        startPoint = transform.position;
     }
 
     // Update is called once per frame
@@ -86,10 +88,12 @@ public class MainCharacter : MonoBehaviour
                     return;
                 }
             }
-            Time.timeScale = 0;
+            
+
         }
         else if (collision.gameObject.tag == "Coin")
         {
+            
             Destroy(collision.gameObject);
         }
     }

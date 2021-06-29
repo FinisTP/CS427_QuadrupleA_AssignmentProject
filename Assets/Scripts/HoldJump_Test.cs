@@ -6,89 +6,110 @@ namespace Phat_Script
 {
     public class HoldJump_Test : MonoBehaviour
     {
-        [SerializeField] LayerMask groundLayer;
-        [SerializeField] float jumpVelocity = 20f;
-        [SerializeField] float JumpForce = 1f;
+        [Header("Movement")]   
         [SerializeField] float moveVelocity = 10f;
-        [SerializeField] float maxJumpTime = 2f;
-
+        [SerializeField] Vector2 startPoint;
+        [SerializeField] ParticleSystem dustParticle;
+        bool facingRight = true;
+        float currentMoveVelocity;
         Rigidbody2D rigid;
-        BoxCollider2D col;
         Animator anim;
 
-        bool facingRight = true;
-        float distanceToCheckGround = 0.2f;
-        float currentMoveVelocity;
-        float currentJumpVelocity = -9.81f;
-
-        [SerializeField] bool isJumping = false;
-        float startJumpY = 0f;
+        [Header("Jumping")]
+        [SerializeField] LayerMask groundLayer;
+        [SerializeField] Transform groundCheckPos;
+        [SerializeField] float jumpVelocity = 20f;
+        [SerializeField] float maxJumpTime = 2f;
+        [SerializeField] float cornerJumpTime = 0.5f;
+        bool fallJump = false;
+        bool isJumping = false;
         float jumpTimer = 0f;
-        [SerializeField] bool isGrounded = false;
+        bool isGrounded = false;
 
         private void Awake()
         {
             rigid = GetComponent<Rigidbody2D>();
-            col = GetComponent<BoxCollider2D>();
             anim = GetComponent<Animator>();
+            startPoint = transform.position;
         }
 
         // Update is called once per frame
         void Update()
         {
-            currentMoveVelocity = Input.GetAxisRaw("Horizontal") * moveVelocity;
-            if (currentMoveVelocity != 0)
+            bool check = Physics2D.OverlapBox(groundCheckPos.position, new Vector2(0.5f, 0.3f), 0f, groundLayer);
+            if (isGrounded && !check)
             {
-                anim.Play("Walking");
+                if (!fallJump)
+                {
+                    fallJump = true;
+                    StartCoroutine(TransitionToGroundless());
+                } else if (isJumping)
+                {
+                    StopAllCoroutines();
+                    fallJump = false;
+                    isGrounded = false;
+                }   
+            }
+            else isGrounded = check;
+            if (!isGrounded) anim.Play("MarioJump");
+            ProcessMove();
+            ProcessJump();
+        }
+
+        private void FixedUpdate()
+        {
+            rigid.velocity = new Vector2(currentMoveVelocity, rigid.velocity.y);
+            if (isJumping) rigid.velocity = new Vector2(rigid.velocity.x, jumpVelocity);
+        }
+
+        void ProcessMove()
+        {
+            currentMoveVelocity = Input.GetAxis("Horizontal") * moveVelocity;
+            if (currentMoveVelocity != 0 && isGrounded)
+            {
+                anim.Play("MarioRun");
             }
             if ((currentMoveVelocity > 0 && !facingRight) || (currentMoveVelocity < 0 && facingRight))
             {
                 Flip();
             }
+            if (Mathf.Abs(Input.GetAxis("Horizontal")) >= 0.8 && isGrounded)
+            {
+                dustParticle.Play();
+            }
+        }
 
-            if (isGrounded) jumpTimer = maxJumpTime;
-
-            // currentJumpVelocity = rigid.velocity.y;
+        void ProcessJump()
+        {
             if (Input.GetButtonDown("Jump") && isGrounded)
             {
-                rigid.AddForce(Vector2.up * JumpForce * Time.deltaTime, ForceMode2D.Impulse);
-                anim.Play("Jump");
+                jumpTimer = maxJumpTime;
+                // anim.Play("Jump");
+                // dustParticle.Play();
+                GameManager_.Instance.soundManager.PlayClip("Jump", 0.75f);
                 isJumping = true;
+                
             }
 
             if (Input.GetButton("Jump") && isJumping)
             {
-                if (jumpTimer > 0)
+                if (jumpTimer >= 0)
                 {
-                    rigid.AddForce(Vector2.up * JumpForce * Time.deltaTime, ForceMode2D.Impulse);
+                    isJumping = true;
                     jumpTimer -= Time.deltaTime;
                 }
-                else
-                {
-                    isJumping = false;
-                    jumpTimer = 0f;
-                }
+                else isJumping = false;
             }
 
-            if (Input.GetButtonUp("Jump"))
-            {
-                isJumping = false;
-                jumpTimer = 0f;
-            }
+            if (Input.GetButtonUp("Jump")) isJumping = false;
         }
 
-
-        bool IsGrounded()
+        IEnumerator TransitionToGroundless()
         {
-            RaycastHit2D raycast = Physics2D.BoxCast(col.bounds.center, col.bounds.size, 0f, Vector2.down, distanceToCheckGround, groundLayer);
-
-            // Color color = Color.green;
-            //Debug.DrawRay(col.bounds.center - new Vector3(col.bounds.extents.x, 0), Vector2.down * (col.bounds.extents.y + distanceToCheckGround), color);
-            //Debug.DrawRay(col.bounds.center + new Vector3(col.bounds.extents.x, 0), Vector2.down * (col.bounds.extents.y + distanceToCheckGround), color);
-            //Debug.DrawRay(col.bounds.center - new Vector3(col.bounds.extents.x, col.bounds.extents.y + distanceToCheckGround), Vector2.right * col.bounds.extents.x * 2, color);
-
-            return raycast.collider != null;
+            yield return new WaitForSeconds(cornerJumpTime);
+            isGrounded = false; fallJump = false;
         }
+
 
         void Flip()
         {
@@ -96,12 +117,6 @@ namespace Phat_Script
             Vector3 scale = transform.localScale;
             scale.x *= -1;
             transform.localScale = scale;
-        }
-
-        private void FixedUpdate()
-        {
-            isGrounded = IsGrounded();
-            rigid.velocity = new Vector2(currentMoveVelocity, rigid.velocity.y);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -112,11 +127,14 @@ namespace Phat_Script
                 {
                     if (i.normal.y > 0)
                     {
+                        GameManager_.Instance.soundManager.PlayClip("Stomp", 1f);
                         Destroy(collision.gameObject);
                         return;
                     }
                 }
-                Time.timeScale = 0;
+                GameManager_.Instance.soundManager.PlayClip("Die", 0.75f);
+                GameManager_.Instance.AddLives(-1);
+                transform.position = startPoint;
             }
         }
 
@@ -124,8 +142,18 @@ namespace Phat_Script
         {
             if (collision.gameObject.tag == "Coin")
             {
+                GameManager_.Instance.soundManager.PlayClip("Coin", 0.75f);
+                GameManager_.Instance.AddScore(100);
                 Destroy(collision.gameObject);
+            } else if (collision.gameObject.tag == "Goal")
+            {
+                GameManager_.Instance.soundManager.GetComponent<AudioSource>().Stop();
+                GameManager_.Instance.soundManager.PlayClip("Win", 0.75f);
             }
+        }
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawCube(groundCheckPos.position, new Vector3(0.5f, 0.01f, 0f));
         }
     }
 }
