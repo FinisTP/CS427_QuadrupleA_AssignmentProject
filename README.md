@@ -1,5 +1,5 @@
 # CS427_QuadrupleA_AssignmentProject01
-### *Team name*: QuadrupleA (Nhóm 2)
+### *Team name*: QuadrupleA (Group 02)
 ### *Team members*:
 - Đặng Khánh Mai (19125011)
 - Nguyễn Thành Nhân (19125041)
