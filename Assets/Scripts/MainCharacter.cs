@@ -28,9 +28,9 @@ public class MainCharacter : MonoBehaviour
     void Update()
     {
         currentMoveVelocity = Input.GetAxisRaw("Horizontal") * moveVelocity;
-        if (currentMoveVelocity != 0)
-        {
-            anim.Play("Walking");
+        if (currentMoveVelocity != 0 && IsGrounded())
+		{
+            anim.Play("MarioRun");
         }
         if ((currentMoveVelocity > 0 && !facingRight) || (currentMoveVelocity < 0 && facingRight))
         {
@@ -39,10 +39,14 @@ public class MainCharacter : MonoBehaviour
 
         currentJumpVelocity = rigid.velocity.y;
         if (Input.GetButton("Jump") && IsGrounded())
-        {
+        {	
             currentJumpVelocity = jumpVelocity;
-            anim.Play("Jump");
         }
+
+		if (!IsGrounded())
+		{
+			anim.Play("MarioJump");
+		}
     }
 
     bool IsGrounded()
